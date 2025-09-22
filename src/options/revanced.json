@@ -1,0 +1,7 @@
+[{
+  "patchName" : "Hide navigation buttons",
+  "options": [{
+    "key": "Hide Create",
+    "value": true
+  }]
+}]
