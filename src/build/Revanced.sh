@@ -200,6 +200,12 @@ revanced_dl(){
 
 yt() {
 	revanced_dl
+ 	# Patch YouTube:
+	get_patches_key "youtube-revanced"
+	get_apk "com.google.android.youtube" "youtube" "youtube" "google-inc/youtube/youtube" "Bundle_extract"
+	split_editor "youtube" "youtube"
+	patch "youtube" "revanced"
+ 
 	# Patch Youtube Arm64-v8a
 	get_patches_key "youtube-revanced" 
 	split_editor "youtube" "youtube-arm64-v8a" "exclude" "split_config.armeabi_v7a split_config.x86 split_config.x86_64"
