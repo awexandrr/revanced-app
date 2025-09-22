@@ -197,6 +197,39 @@ revanced_dl(){
 	get_apk "ch.protonmail.android" "protonmail" "protonmail-encrypted-email" "proton-technologies-ag/protonmail-encrypted-email/proton-mail-encrypted-email"
 	patch "protonmail" "revanced"
 }
+
+yt() {
+	revanced_dl
+ 	# Patch YouTube:
+	get_patches_key "youtube-revanced"
+	get_apk "com.google.android.youtube" "youtube" "youtube" "google-inc/youtube/youtube" "Bundle_extract"
+	split_editor "youtube" "youtube"
+	patch "youtube" "revanced"
+ 
+	# Patch Youtube Arm64-v8a
+	get_patches_key "youtube-revanced" 
+	split_editor "youtube" "youtube-arm64-v8a" "exclude" "split_config.armeabi_v7a split_config.x86 split_config.x86_64"
+	patch "youtube-arm64-v8a" "revanced"
+
+	# Patch YouTube Music Arm64-v8a
+	get_patches_key "youtube-music-revanced"
+	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm64-v8a" "youtube-music" "google-inc/youtube-music/youtube-music" "arm64-v8a"
+	patch "youtube-music-arm64-v8a" "revanced"
+
+	# Patch Instagram Arm64-v8a
+	get_patches_key "instagram"
+ 	get_apkpure "com.instagram.android" "instagram-arm64-v8a" "instagram-android/com.instagram.android" "Bundle"
+	patch "instagram-arm64-v8a" "revanced"
+ 
+	# Patch Proton mail
+	get_patches_key "protonmail-revanced"
+	get_apk "ch.protonmail.android" "protonmail" "protonmail-encrypted-email" "proton-technologies-ag/protonmail-encrypted-email/proton-mail-encrypted-email"
+	patch "protonmail" "revanced"
+}
+
+if [ $# -eq 0 ]; then
+	yt
+else
 case "$1" in
     1)
         1
@@ -235,3 +268,4 @@ case "$1" in
         12
         ;;
 esac
+fi

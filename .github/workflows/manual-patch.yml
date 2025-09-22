@@ -25,9 +25,9 @@ jobs:
     name: Patch Revanced Stable
     if: ${{ github.event.inputs.org == 'Revanced' || inputs.org == 'Revanced' }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        run: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    # strategy:
+    #  matrix:
+    #    run: [13]
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -39,7 +39,7 @@ jobs:
       - name: Patch apk
         id: patch-rv
         if: steps.check-gh-rv.outputs.internet_error == '0'
-        run: bash src/build/Revanced.sh ${{ matrix.run }}
+        run: bash src/build/Revanced.sh
       - name: Releasing APK files
         id: release-rv
         if: steps.check-gh-rv.outputs.internet_error == '0'
