@@ -197,6 +197,36 @@ revanced_dl(){
 	get_apk "ch.protonmail.android" "protonmail" "protonmail-encrypted-email" "proton-technologies-ag/protonmail-encrypted-email/proton-mail-encrypted-email"
 	patch "protonmail" "revanced"
 }
+
+yt() {
+	revanced_dl
+	# Patch Youtube Arm64-v8a
+	get_patches_key "youtube-revanced" 
+	split_editor "youtube" "youtube-arm64-v8a" "exclude" "split_config.armeabi_v7a split_config.x86 split_config.x86_64"
+	patch "youtube-arm64-v8a" "revanced"
+
+	# Patch YouTube Music Arm64-v8a
+	get_patches_key "youtube-music-revanced"
+	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm64-v8a" "youtube-music" "google-inc/youtube-music/youtube-music" "arm64-v8a"
+	patch "youtube-music-arm64-v8a" "revanced"
+}
+
+ig() {
+	revanced_dl
+	# Patch Instagram Arm64-v8a
+	get_patches_key "instagram"
+ 	get_apkpure "com.instagram.android" "instagram-arm64-v8a" "instagram-android/com.instagram.android" "Bundle"
+	patch "instagram-arm64-v8a" "revanced"
+}
+
+pm(){
+	revanced_dl
+	# Patch Proton mail
+	get_patches_key "protonmail-revanced"
+	get_apk "ch.protonmail.android" "protonmail" "protonmail-encrypted-email" "proton-technologies-ag/protonmail-encrypted-email/proton-mail-encrypted-email"
+	patch "protonmail" "revanced"
+}
+
 case "$1" in
     1)
         1
@@ -234,4 +264,9 @@ case "$1" in
     12)
         12
         ;;
+	13)
+ 		yt
+    	ig
+	 	pm
+   		;;
 esac
