@@ -1,0 +1,15 @@
+[
+    {
+        "patchName": "Hide navigation buttons",
+        "options": [
+            {
+                "key": "Hide Direct",
+                "value": true
+            },
+            {
+                "key": "Hide Create",
+                "value": true
+            }
+        ]
+    }
+]

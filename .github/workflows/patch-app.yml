@@ -1,0 +1,53 @@
+name: Patch Revanced App
+permissions: write-all
+env:
+  repository: ${{ github.repository }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  org_input: ${{ inputs.org }}
+  org_event_input: ${{ github.event.inputs.org }}
+on:
+  workflow_dispatch:
+    inputs:
+      org:
+        description: 'Which "Revanced" do you want to patch?'
+        required: true
+        default: 'Revanced'
+        type: choice
+        options:
+          - 'Revanced'
+
+  workflow_call:
+    inputs:
+      org:
+        required: true
+        type: string
+
+jobs:
+  patch_rv:
+    name: Patch Revanced Stable
+    if: ${{ github.event.inputs.org == 'Revanced' || inputs.org == 'Revanced' }}
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     run: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh-rv
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch-rv
+        if: steps.check-gh-rv.outputs.internet_error == '0'
+        run: bash src/build/Revanced_app.sh
+      - name: Get patch version
+        id: get-patch-version
+        if: ${{ env.REVANCED_PATCH_VERSION == '' }}
+        run: bash src/etc/ci.sh ReVanced/revanced-patches latest youtube.apk
+      - name: Releasing APK files
+        id: release-rv
+        if: steps.check-gh-rv.outputs.internet_error == '0'
+        uses: ./.github/actions/release-app
