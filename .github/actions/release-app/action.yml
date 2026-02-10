@@ -7,7 +7,7 @@ runs:
       run: |
         echo "
         
-        https://github.com/revanced/revanced-patches/releases @ {{ env.REVANCED_PATCH_VERSION }}
+        https://github.com/revanced/revanced-patches/releases
         "> ${{ github.workspace }}-CHANGELOG.txt
     - name: Release
       uses: ncipollo/release-action@v1.14.0
