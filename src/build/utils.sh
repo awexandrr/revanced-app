@@ -396,6 +396,8 @@ patch() {
 		else
 			apk_name="$1-$version-$2.apk"
 		fi
+		green_log "[D] Excluded patches: $excludePatches"
+		green_log "[D] Included patches: $includePatches"
 		eval java -jar *cli*.jar $p$b $m$opt --out=./release/$apk_name$excludePatches$includePatches$ks $pu$force $a./download/$1.apk
   		unset version
 		unset lock_version
