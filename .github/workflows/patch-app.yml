@@ -5,7 +5,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   org_input: ${{ inputs.org }}
   org_event_input: ${{ github.event.inputs.org }}
-  REVANCED_PATCH_VERSION: ${{ vars.REVANCED_PATCH_VERSION }}
 on:
   workflow_dispatch:
     inputs:
