@@ -47,6 +47,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           retry_count: ${{ github.event.inputs.retry_count }}
+          REVANCED_PATCH_VERSION: ${{ vars.REVANCED_PATCH_VERSION }}
           max_retries: 3
     outputs:
       check_rv: ${{ steps.check-rv.outputs.new_patch }}
