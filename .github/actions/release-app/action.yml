@@ -1,4 +1,8 @@
 name: Releasing APK files
+outputs:
+  patch_version:
+    description: "Latest patch version"
+    value: ${{ steps.rv-version.outputs.patch_version }}
 runs:
   using: "composite"
   steps:
@@ -6,19 +10,18 @@ runs:
       shell: bash
       run: |
         echo "
-        
         https://github.com/revanced/revanced-patches/releases
         "> ${{ github.workspace }}-CHANGELOG.txt
     - name: Get patch version
       shell: bash
-      id: get-patch-version
-      run: bash src/etc/check.sh ReVanced/revanced-patches latest youtube.apk
+      id: rv-version
+      run: bash src/etc/check.sh ReVanced/revanced-patches latest
     - name: Release
       uses: ncipollo/release-action@v1.14.0
       with:
         artifacts: |
           ./release/*.apk
-        name: ${{ steps.get-patch-version.outputs.patch_version }}
-        tag: ${{ steps.get-patch-version.outputs.patch_version }}
+        name: ${{ steps.rv-version.outputs.patch_version }}
+        tag: ${{ steps.rv-version.outputs.patch_version }}
         bodyFile: ${{ github.workspace }}-CHANGELOG.txt
         allowUpdates: true

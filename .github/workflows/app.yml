@@ -51,6 +51,7 @@ jobs:
           max_retries: 3
     outputs:
       check_rv: ${{ steps.check-rv.outputs.new_patch }}
+      patch_version: ${{ steps.check-rv.outputs.patch_version }}
 
   Patch-Revanced:
     name: Patch Revanced Stable
