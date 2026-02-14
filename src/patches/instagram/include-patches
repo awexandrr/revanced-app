@@ -1,8 +1,7 @@
 Limit feed to followed profiles
-Anonymous story viewing
-Hide navigation buttons
+Hide navigation buttons|-OhideDirect=true
+Remove screenshot restriction
+Hide suggested content
 Sanitize sharing links
 Open links externally
-Prevent screenshot detection
-Disable Sentry telemetry
 Hide ads

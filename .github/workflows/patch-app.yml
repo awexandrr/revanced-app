@@ -43,10 +43,6 @@ jobs:
         id: patch-rv
         if: steps.check-gh-rv.outputs.internet_error == '0'
         run: bash src/build/Revanced_app.sh
-      - name: Get patch version
-        id: get-patch-version
-        if: ${{ env.REVANCED_PATCH_VERSION == '' }}
-        run: bash src/etc/check.sh ReVanced/revanced-patches latest youtube.apk
       - name: Releasing APK files
         id: release-rv
         if: steps.check-gh-rv.outputs.internet_error == '0'

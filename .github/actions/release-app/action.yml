@@ -9,12 +9,16 @@ runs:
         
         https://github.com/revanced/revanced-patches/releases
         "> ${{ github.workspace }}-CHANGELOG.txt
+    - name: Get patch version
+      shell: bash
+      id: get-patch-version
+      run: bash src/etc/check.sh ReVanced/revanced-patches latest youtube.apk
     - name: Release
       uses: ncipollo/release-action@v1.14.0
       with:
         artifacts: |
           ./release/*.apk
-        name: ${{ env.REVANCED_PATCH_VERSION }}
-        tag: ${{ env.REVANCED_PATCH_VERSION }}
+        name: ${{ steps.get-patch-version.outputs.patch_version }}
+        tag: ${{ steps.get-patch-version.outputs.patch_version }}
         bodyFile: ${{ github.workspace }}-CHANGELOG.txt
         allowUpdates: true

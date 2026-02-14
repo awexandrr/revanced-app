@@ -19,7 +19,7 @@ get_date() {
 	esac
 
     if [[ $1 == "Revanced/revanced-patches" ]]; then
-		echo "REVANCED_PATCH_VERSION=${patch_version}" >> $GITHUB_ENV
+		echo "patch_version=${patch_version}" >> $GITHUB_OUTPUT
 	fi
 
 	echo "$updated_at"
