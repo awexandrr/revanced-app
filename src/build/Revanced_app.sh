@@ -47,13 +47,18 @@ tiktok() {
 	get_patches_key "tiktok"
 	url="https://tiktok.en.uptodown.com/android/download/1026195874-x" #Use uptodown because apkmirror ban tiktok in US lead github action can't download apk file
 	url="https://dw.uptodown.com/dwn/$(req "$url" - | $pup -p --charset utf-8 'button#detail-download-button attr{data-url}')"
-	req "$url" "tiktok.apk"
+	req "$url" "tiktok.apk" 2>&1 | 
+	while IFS= read -r line; do
+		echo $line
+		version=$(echo "$line" | sed -n 's/.*\/tiktok-\([0-9-]\+\)\.apk.*/\1/p' | tr '-' '.')
+		export version="$version"
+	done
 	patch "tiktok" "revanced"
 }
 
 proton_mail() {
     # Patch Proton mail
-	get_patches_key "protonmail-revanced"
+	get_patches_key "protonmail"
 	get_apk "ch.protonmail.android" "protonmail" "protonmail-encrypted-email" "proton-technologies-ag/protonmail-encrypted-email/proton-mail-encrypted-email"
 	patch "protonmail" "revanced"
 }

@@ -6,23 +6,31 @@ get_date() {
 	case "$2" in
 		latest)
 			updated_at=$(echo "$json" | jq -r 'first(.[] | select(.prerelease == false) | .assets[] | select(.name | test("'$3'")) | .updated_at)')
-            patch_version=$(echo "$json" | jq -r 'first(.[] | select(.prerelease == false) | .tag_name)')
 			;;
 		prerelease)
 			updated_at=$(echo "$json" | jq -r 'first(.[] | select(.prerelease == true) | .assets[] | select(.name | test("'$3'")) | .updated_at)')
-            patch_version=$(echo "$json" | jq -r 'first(.[] | select(.prerelease == true) | .tag_name)')
 			;;
 		*)
 			updated_at=$(echo "$json" | jq -r 'first(.[] | select(.tag_name == "'$2'") | .assets[] | select(.name | test("'$3'")) | .updated_at)')
-            patch_version=$(echo "$json" | jq -r 'first(.[] | .tag_name)')
 			;;
 	esac
-
-    if [[ $1 == "Revanced/revanced-patches" ]]; then
-		echo "patch_version=${patch_version}" >> $GITHUB_OUTPUT
-	fi
-
 	echo "$updated_at"
+}
+
+get_patch_version() {
+	json=$(wget -qO- "https://api.github.com/repos/$1/releases")
+	case "$2" in
+		latest)
+			patch_version=$(echo "$json" | jq -r 'first(.[] | select(.prerelease == false) | .tag_name)')
+			;;
+		prerelease)
+			patch_version=$(echo "$json" | jq -r 'first(.[] | select(.prerelease == true) | .tag_name)')
+			;;
+		*)
+			patch_version=$2
+			;;
+	esac
+	echo "$patch_version"
 }
 
 checker(){
@@ -31,13 +39,18 @@ checker(){
 	date2=$(get_date "$ur_repo" "$2" "^(.*\\\.apk)$")
 	date1_sec=$(date -d "$date1" +%s)
 	date2_sec=$(date -d "$date2" +%s)
+
+	patch_version=$(get_patch_version "$repo" "$2")
+	echo "patch_version=$patch_version" >> $GITHUB_OUTPUT
+	echo -e "\e[32mLatest patch version: $patch_version\e[0m"
+
 	if [ -z "$date2" ] || [ "$date1_sec" -gt "$date2_sec" ]; then
 		echo "new_patch=1" >> $GITHUB_OUTPUT
-		echo -e "\e[32mNew patch, building...\e[0m"
+		echo -e "\e[32mUpdate status: true\e[0m"
 	elif [ "$date1_sec" -lt "$date2_sec" ]; then
 		echo "new_patch=0" >> $GITHUB_OUTPUT
-		echo -e "\e[32mOld patch, not build.\e[0m"
-	fi
+		echo -e "\e[32mUpdate status: false\e[0m"
+	fi	
 }
 
 checker $1 $2 $3
